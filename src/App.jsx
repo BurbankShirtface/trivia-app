@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [question, setQuestion] = useState({
@@ -7,6 +7,7 @@ function App() {
     correctAnswer: "",
     id: "",
   });
+
   const [intro, setIntro] = useState(true);
   const [gametime, setGametime] = useState(false);
   let answers;
@@ -27,34 +28,21 @@ function App() {
         setGametime(true);
         displayAnswers(question.incorrectAnswers, question.correctAnswer);
       });
-  }
 
-  // function literallyDisplayAnswers(answers) {
-  //   console.log(answers);
-  //   answerMap = answers.map((item) => {
-  //     return (
-  //       <li>
-  //         <button key={item}>{item}</button>
-  //       </li>
-  //     );
-  //   });
-  // }
-
-  function displayAnswers(answerArray, correctAnswer) {
-    answers = answerArray.concat(correctAnswer);
-    // shuffle answers array
-    for (let i = 0; i < answers.length; i++) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = answers[i];
-      answers[i] = answers[j];
-      answers[j] = temp;
+    function displayAnswers(answerArray, correctAnswer) {
+      answers = answerArray.concat(correctAnswer);
+      // shuffle answers array
+      for (let i = 0; i < answers.length; i++) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = answers[i];
+        answers[i] = answers[j];
+        answers[j] = temp;
+      }
+      console.log(answers);
+      answerMap = answers.map((item) => <div>{item}</div>);
+      console.log(answerMap);
+      return answerMap;
     }
-    console.log(answers);
-    // literallyDisplayAnswers(answers);
-    answerMap = answers.map((item) => {
-      return <li>{item}</li>;
-    });
-    console.log(answerMap);
   }
 
   return (
@@ -76,7 +64,7 @@ function App() {
       {gametime ? (
         <div className="gametime-screen">
           <h2>{question.questionText}?</h2>
-          <ul>{displayAnswers}</ul>
+          <div>{answerMap}</div>
           <button className="get-question-button" onClick={getQuestion}>
             Next Question
           </button>
@@ -89,5 +77,3 @@ function App() {
 export default App;
 
 // maybe make the joke 'card' a different component?
-
-// THIS IS A TEST
